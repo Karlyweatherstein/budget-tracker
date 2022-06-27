@@ -18,4 +18,4 @@
 
 - GitHub URL for this project: https://github.com/Karlyweatherstein/budget-tracker
 
-- Deployed URL:
+- Deployed URL: https://salty-shelf-06974.herokuapp.com/
