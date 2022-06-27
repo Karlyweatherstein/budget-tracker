@@ -1,13 +1,13 @@
 // variable to hold db connection
 let db;
-// establish a connection to IndexedDB database called 'BudgetTracker' and set it to version 1
-const request = indexedDB.open("BudgetTracker", 1);
+// establish a connection to IndexedDB database called 'budgetTracker' and set it to version 1
+const request = indexedDB.open("budgetTracker", 1);
 
 // this event will emit if the database version changes
 request.onupgradeneeded = function (event) {
   // save a reference to the database
   const db = event.target.result;
-  db.createObjectStore("BudgetTracker", { autoIncrement: true });
+  db.createObjectStore("newBudget", { autoIncrement: true });
 };
 
 // upon a successful
@@ -29,24 +29,24 @@ request.onerror = function (event) {
 // This function will be executed if we attempt to submit a new expense and there's no internet connection
 function saveRecord(record) {
   // open a new transaction with the database with read and write permissions
-  const transaction = db.transaction(["BudgetTracker"], "readwrite");
+  const transaction = db.transaction(["newBudget"], "readwrite");
 
-  // access the object store for `BudgetTracker`
-  const BudgetTrackerObjectStore = transaction.objectStore("BudgetTracker");
+  // access the object store for `budgetTracker`
+  const budgetTrackerObjectStore = transaction.objectStore("newBudget");
 
   // add record to your store with add method
-  BudgetTrackerObjectStore.add(record);
+  budgetTrackerObjectStore.add(record);
 }
 
 function uploadBudget() {
   // open a transaction on your db
-  const transaction = db.transaction(["BudgetTracker"], "readwrite");
+  const transaction = db.transaction(["newBudget"], "readwrite");
 
   // access your object store
-  const BudgetTrackerObjectStore = transaction.objectStore("BudgetTracker");
+  const budgetTrackerObjectStore = transaction.objectStore("newBudget");
 
   // get all records from store and set to a variable
-  const getAll = BudgetTrackerObjectStore.getAll();
+  const getAll = budgetTrackerObjectStore.getAll();
 
   // upon a successful .getAll() execution, run this function
   getAll.onsuccess = function () {
@@ -66,12 +66,11 @@ function uploadBudget() {
             throw new Error(serverResponse);
           }
           // open one more transaction
-          const transaction = db.transaction(["BudgetTracker"], "readwrite");
-          // access the BudgetTracker object store
-          const BudgetTrackerObjectStore =
-            transaction.objectStore("BudgetTracker");
+          const transaction = db.transaction(["newBudget"], "readwrite");
+          // access the newBudget object store
+          const budgetTrackerObjectStore = transaction.objectStore("newBudget");
           // clear all items in your store
-          BudgetTrackerObjectStore.clear();
+          budgetTrackerObjectStore.clear();
 
           alert("All saved expenses have been submitted!");
         })
